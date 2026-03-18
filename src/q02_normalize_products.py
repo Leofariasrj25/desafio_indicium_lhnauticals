@@ -83,7 +83,7 @@ def main() -> None:
 
     BASE_DIR = Path(__file__).resolve().parent.parent
     bronze_path = Path(BASE_DIR / "data" / "raw" / "produtos_raw.csv")
-    silver_path = Path(BASE_DIR / "processed" / "produtos_processed.csv")
+    silver_path = Path(BASE_DIR / "data" / "processed" / "produtos_processed.csv")
 
     try:
         logging.info("Initializing data extraction...")
