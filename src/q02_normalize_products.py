@@ -66,7 +66,7 @@ def transform_data(df: pd.DataFrame) -> pd.DataFrame:
 
 def load_data(df: pd.DataFrame, output_path: Union[str, Path]) -> None:
     """
-    Saves the DataFrame to the Silver layer (processed/)
+    Saves the DataFrame in the Silver layer (data/processed/)
     Ensures the directory creation if it doesnt exist.
     """
 
