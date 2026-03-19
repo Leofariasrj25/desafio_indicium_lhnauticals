@@ -16,6 +16,10 @@ q03:
 	@echo "q03 - Import costs flattening"
 	poetry run python src/q03_flatten_imports.py
 
+q04:
+	@echo "q04 - Public Data"
+	poetry run python src/q04_calculate_profitability.py
+
 clean:
 	@echo "Cleaning processed files"
 	@rm -rf ./data/processed/*
