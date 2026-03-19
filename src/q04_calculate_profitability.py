@@ -115,6 +115,10 @@ def calculate_financials(df_final: pd.DataFrame) -> pd.DataFrame:
         0.0
     )
 
+    df_agg["total_revenue"] = df_agg["total_revenue"].round(2)
+    df_agg["total_loss"] = df_agg["total_loss"].round(2)
+    df_agg["loss_percentage"] = df_agg["loss_percentage"].round(4)
+
     return df_agg
 
 

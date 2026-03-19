@@ -6,19 +6,22 @@ setup:
 
 eda:
 	@echo "Abrindo o relatório de análise explorátoria"
-	poetry run jupyter notebook notebooks/01_eda_sales.ipynb
+	@poetry run jupyter notebook notebooks/01_eda_sales.ipynb
 
 q02:
 	@echo "q02 - Product Data Normalization"
-	poetry run python src/q02_normalize_products.py
+	@poetry run python src/q02_normalize_products.py
 
 q03:
 	@echo "q03 - Import costs flattening"
-	poetry run python src/q03_flatten_imports.py
+	@poetry run python src/q03_flatten_imports.py
 
 q04:
 	@echo "q04 - Public Data"
-	poetry run python src/q04_calculate_profitability.py
+	@poetry run python src/q04_calculate_profitability.py
+	@echo "Generating graphics from facts..."
+	@echo "Lauching jupyter notebook..."
+	@poetry run jupyter notebook notebooks/04_loss_analysis.ipynb
 
 clean:
 	@echo "Cleaning processed files"
