@@ -49,7 +49,7 @@ def transform_data(raw_json: Union[dict, list]) -> pd.DataFrame:
         df_flattened["start_date"], format="%d/%m/%Y"
     )
 
-    df_flattened = df_flattened["usd_price"].astype(float)
+    df_flattened["usd_price"] = df_flattened["usd_price"].astype(float)
 
     logging.info(f"JSON flattened successfully. Total extracted records: {line_count}")
 
