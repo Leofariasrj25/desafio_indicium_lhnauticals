@@ -149,7 +149,7 @@ def main() -> None:
 
         logging.info("Saving aggregated report to Silver layer...")
         df_financials.to_csv(output_path, index=False)
-        logging.info(f"Pipeline finished. Top loss products:\n{df_financials.head(3)}")
+        logging.info(f"Pipeline finished.")
 
     except Exception as e:
         logging.error(f"Pipeline execution failed: {e}")
