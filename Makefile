@@ -1,28 +1,74 @@
-.PHONY: setup eda q02 
+.PHONY: help setup etl q02 q03 q04 eda report lab clean
 
+# ==========================================
+# ENVIRONMENT VARIABLES
+# ==========================================
+POETRY_RUN = poetry run
+PYTHON = $(POETRY_RUN) python
+JUPYTER = $(POETRY_RUN) jupyter notebook
+ETL_DIR = src/etl
+NB_DIR = notebooks
+
+# ==========================================
+# HELP MENU (Default Command)
+# ==========================================
+help:
+	@echo "======================================================================"
+	@echo " LH Nauticals - Data Pipeline"
+	@echo "======================================================================"
+	@echo "Available Commands:"
+	@echo "  make setup   - Install all project dependencies via Poetry"
+	@echo "  make etl     - Run the complete data pipeline (q02 -> q03 -> q04)"
+	@echo "  make lab     - Open the Jupyter Notebook environment in the project folder"
+	@echo "  make eda     - Open the Exploratory Data Analysis notebook directly (Q01)"
+	@echo "  make report  - Open the Consolidated Final Report directly"
+	@echo "  make clean   - Clean processed data and Python cache files"
+	@echo "======================================================================"
+
+# ==========================================
+# SETUP
+# ==========================================
 setup:
-	@echo "Installing dependencies via poetry"
+	@echo "==> Installing dependencies..."
 	poetry install
 
-eda:
-	@echo "Abrindo o relatório de análise explorátoria"
-	@poetry run jupyter notebook notebooks/01_eda_sales.ipynb
+# ==========================================
+# ETL PIPELINE (Data Processing)
+# ==========================================
+etl: q02 q03
+	@echo "==> ETL pipeline finished successfully. Data ready in data/processed/"
 
 q02:
-	@echo "q02 - Product Data Normalization"
-	@poetry run python src/q02_normalize_products.py
+	@echo "==> Q02: Normalizing product catalog..."
+	@$(PYTHON) $(ETL_DIR)/q02_normalize_products.py
 
 q03:
-	@echo "q03 - Import costs flattening"
-	@poetry run python src/q03_flatten_imports.py
+	@echo "==> Q03: Flattening import cost data..."
+	@$(PYTHON) $(ETL_DIR)/q03_flatten_imports.py
 
-q04:
-	@echo "q04 - Public Data"
-	@poetry run python src/q04_calculate_profitability.py
-	@echo "Generating graphics from facts..."
-	@echo "Lauching jupyter notebook..."
-	@poetry run jupyter notebook notebooks/04_loss_analysis.ipynb
+# ==========================================
+# ANALYSIS AND PRESENTATION (Notebooks)
+# ==========================================
+lab:
+	@echo "==> Starting Jupyter Server..."
+	@$(JUPYTER) $(NB_DIR)/
 
+eda:
+	@echo "==> Opening the Exploratory Data Analysis (EDA) report..."
+	@$(JUPYTER) $(NB_DIR)/01_eda_sales.ipynb
+
+report:
+	@echo "==> Opening the Final Executive Report..."
+	@$(JUPYTER) $(NB_DIR)/final_report_lhnauticals.ipynb
+
+# ==========================================
+# MAINTENANCE
+# ==========================================
 clean:
-	@echo "Cleaning processed files"
+	@echo "==> Cleaning output directories..."
 	@rm -rf ./data/processed/*
+	@rm -rf ./processed/*
+	@echo "==> Cleaning Python cache..."
+	@find . -type d -name "__pycache__" -exec rm -rf {} +
+	@find . -type f -name "*.pyc" -delete
+	@echo "==> Environment clean."
