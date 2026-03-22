@@ -28,6 +28,7 @@ def load_datasets(
 ) -> Dict[str, pd.DataFrame]:
     """
     Loads requested datasets into a dictionary. Triggers ETL if processed files are missing.
+    Dynamically routes to the correct Pandas loader based on file extension.
     """
 
     dataframes = {}
@@ -50,6 +51,17 @@ def load_datasets(
                 f"Critical error: {file_path} does not exist even after ETL attempt."
             )
 
-        dataframes[file_name] = pd.read_csv(file_path)
+        file_extension = file_path.suffix.lower()
+
+        try:
+            if file_extension == ".csv":
+                dataframes[file_name] = pd.read_csv(file_path)
+            elif file_extension == ".json":
+                dataframes[file_name] = pd.read_json(file_path)
+            else:
+                raise ValueError(f"File format not supported: {file_extension}")
+        except ValueError as e:
+            logging.error(f"Error while reading file  {file_name}: {e}")
+            raise
 
     return dataframes
