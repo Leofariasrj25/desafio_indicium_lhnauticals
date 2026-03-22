@@ -81,7 +81,7 @@ def main() -> None:
     Setup the Product ETL pipeline
     """
 
-    BASE_DIR = Path(__file__).resolve().parent.parent
+    BASE_DIR = Path(__file__).resolve().parent.parent.parent
     bronze_path = Path(BASE_DIR / "data" / "raw" / "produtos_raw.csv")
     silver_path = Path(BASE_DIR / "data" / "processed" / "produtos_processed.csv")
 

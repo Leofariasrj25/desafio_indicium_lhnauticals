@@ -72,7 +72,7 @@ def main() -> None:
     Orchestrates the Importing Costs ETL pipeline.
     """
 
-    BASE_DIR = Path(__file__).resolve().parent.parent
+    BASE_DIR = Path(__file__).resolve().parent.parent.parent
     bronze_path = BASE_DIR / "data" / "raw" / "custos_importacao.json"
     silver_path = BASE_DIR / "data" / "processed" / "custos_importacao_processed.csv"
 
