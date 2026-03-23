@@ -8,6 +8,7 @@ PYTHON = $(POETRY_RUN) python
 JUPYTER = $(POETRY_RUN) jupyter notebook
 ETL_DIR = src/etl
 NB_DIR = notebooks
+REPORT_DIR = reports
 
 # ==========================================
 # HELP MENU (Default Command)
@@ -61,6 +62,12 @@ report:
 	@echo "==> Opening the Final Executive Report..."
 	@$(JUPYTER) $(NB_DIR)/final_report_lhnauticals.ipynb
 
+site:
+	@echo "==> Exporting the Final Executive Report to a HTML file..."
+	@mkdir -p report
+	@$(POETRY_RUN) jupyter nbconvert --to html $(NB_DIR)/final_report_lhnauticals.ipynb --output-dir $(REPORT_DIR) 
+	@echo "==> Report sucessfully converted and saved at $(REPORT_DIR)/"
+
 # ==========================================
 # MAINTENANCE
 # ==========================================
@@ -68,6 +75,7 @@ clean:
 	@echo "==> Cleaning output directories..."
 	@rm -rf ./data/processed/*
 	@rm -rf ./processed/*
+	@rm -rf ./reports/*
 	@echo "==> Cleaning Python cache..."
 	@find . -type d -name "__pycache__" -exec rm -rf {} +
 	@find . -type f -name "*.pyc" -delete
