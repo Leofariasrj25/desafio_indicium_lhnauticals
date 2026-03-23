@@ -32,7 +32,7 @@ help:
 # ==========================================
 setup:
 	@echo "==> Installing dependencies..."
-	poetry install
+	poetry install --no-root
 
 # ==========================================
 # ETL PIPELINE (Data Processing)
