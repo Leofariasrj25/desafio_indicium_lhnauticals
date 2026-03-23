@@ -23,6 +23,7 @@ help:
 	@echo "  make lab     - Open the Jupyter Notebook environment in the project folder"
 	@echo "  make eda     - Open the Exploratory Data Analysis notebook directly (Q01)"
 	@echo "  make report  - Open the Consolidated Final Report directly"
+	@echo "  make html    - Convert the Consolidated Final Report into a HTML page"
 	@echo "  make clean   - Clean processed data and Python cache files"
 	@echo "======================================================================"
 
@@ -62,7 +63,7 @@ report:
 	@echo "==> Opening the Final Executive Report..."
 	@$(JUPYTER) $(NB_DIR)/final_report_lhnauticals.ipynb
 
-site:
+html:
 	@echo "==> Exporting the Final Executive Report to a HTML file..."
 	@mkdir -p report
 	@$(POETRY_RUN) jupyter nbconvert --to html $(NB_DIR)/final_report_lhnauticals.ipynb --output-dir $(REPORT_DIR) 
