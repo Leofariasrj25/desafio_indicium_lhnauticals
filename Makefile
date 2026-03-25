@@ -37,16 +37,20 @@ setup:
 # ==========================================
 # ETL PIPELINE (Data Processing)
 # ==========================================
-etl: q02 q03
+etl: products imports clients 
 	@echo "==> ETL pipeline finished successfully. Data ready in data/processed/"
 
-q02:
+products:
 	@echo "==> Q02: Normalizing product catalog..."
 	@$(PYTHON) $(ETL_DIR)/q02_normalize_products.py
 
-q03:
+imports:
 	@echo "==> Q03: Flattening import cost data..."
 	@$(PYTHON) $(ETL_DIR)/q03_flatten_imports.py
+
+clients:
+	@echo "==> Extra: Flattening and normalizing client data..."
+	$(PYTHON) $(ETL_DIR)/client_flattening_normalization.py
 
 # ==========================================
 # ANALYSIS AND PRESENTATION (Notebooks)
