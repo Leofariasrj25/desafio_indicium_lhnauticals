@@ -11,7 +11,7 @@ from etl.transform_products import transform_products
 from etl.transform_clients import transform_clients
 from etl.transform_import_costs import transform_import_costs
 from etl.transform_dolar_exchange_rates import transform_rates
-
+from etl.build_fct_product_profitability import build_fct_product_profitability
 from services.bcb_api import fetch_exchange_rates
 
 import utils.paths as paths
@@ -104,6 +104,10 @@ def main() -> None:
         / "usdolar_exchange_rates_2023_2024.csv",
     }
 
+    analytics_paths = {
+        "profitability": paths.ANALYTICS_DATA_DIR / "fct_product_profitability.csv"
+    }
+
     transformers = {
         "sales": transform_sales,
         "products": transform_products,
@@ -118,10 +122,19 @@ def main() -> None:
     #  TO_DO: make api call to BCB dollar exchange rate produce a csv.
     # Phase 2 - Analytics
     try:
+        logging.info("--- PHASE 1: Raw to Processed (Silver Layer) ---")
         run_etl_raw_layer(
             input_paths=raw_paths,
             output_paths=processed_paths,
             transformers=transformers,
+        )
+
+        logging.info("--- PHASE 2: Processed to Analytics (Gold Layer) ---")
+        build_fct_product_profitability(
+            sales_path=processed_paths["sales"],
+            import_costs_path=processed_paths["import_costs"],
+            usdolar_exchange_rates_path=processed_paths["exchange_rates"],
+            output_path=analytics_paths["profitability"],
         )
     except Exception as e:
         logging.error(f"Error while executing pipeline: {e}")
