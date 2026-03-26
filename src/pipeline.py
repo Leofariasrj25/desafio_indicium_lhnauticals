@@ -134,6 +134,7 @@ def main() -> None:
             sales_path=processed_paths["sales"],
             import_costs_path=processed_paths["import_costs"],
             usdolar_exchange_rates_path=processed_paths["exchange_rates"],
+            products_path=processed_paths["products"],
             output_path=analytics_paths["profitability"],
         )
     except Exception as e:

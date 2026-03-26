@@ -5,8 +5,6 @@ from typing import Union
 import pandas as pd
 import numpy as np
 
-import utils.paths as paths
-
 
 def process_profitability(
     df_sales: pd.DataFrame, df_costs: pd.DataFrame, df_rates: pd.DataFrame
@@ -78,6 +76,7 @@ def build_fct_product_profitability(
     sales_path: Union[str, Path],
     import_costs_path: Union[str, Path],
     usdolar_exchange_rates_path: Union[str, Path],
+    products_path: Union[str, Path],
     output_path: Union[str, Path],
 ) -> None:
     """
@@ -89,6 +88,7 @@ def build_fct_product_profitability(
         df_sales = pd.read_csv(sales_path)
         df_costs = pd.read_csv(import_costs_path)
         df_rates = pd.read_csv(usdolar_exchange_rates_path)
+        df_products = pd.read_csv(products_path)
 
         logging.info("Applying Time-Series AsOf Joins (Sales, Costs, Rates)...")
         df_enriched = process_profitability(df_sales, df_costs, df_rates)
@@ -96,11 +96,35 @@ def build_fct_product_profitability(
         logging.info("Calculating financial models...")
         df_financials = calculate_financials(df_enriched)
 
+        logging.info("Denormalizing: Adding Product Name and Category...")
+
+        df_gold = df_financials.merge(
+            df_products[["code", "name", "actual_category"]],
+            left_on="id_product",
+            right_on="code",
+            how="left",
+        )
+
+        df_gold = df_gold.rename(
+            columns={"name": "product_name", "actual_category": "category"}
+        )
+        df_gold = df_gold.drop(columns=["code"])
+
+        ordered_cols = [
+            "id_product",
+            "product_name",
+            "category",
+            "total_revenue",
+            "total_loss",
+            "loss_percentage",
+        ]
+        df_gold = df_gold[ordered_cols]
+
         if isinstance(output_path, str):
             output_path = Path(output_path)
 
         output_path.parent.mkdir(parents=True, exist_ok=True)
-        df_financials.to_csv(output_path, index=False)
+        df_gold.to_csv(output_path, index=False)
 
     except Exception as e:
         logging.error(f"Pipeline execution failed: {e}")
