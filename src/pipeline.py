@@ -6,6 +6,7 @@ from typing import Union
 import numpy as np
 import pandas as pd
 
+from etl.transform_sales import transform_sales
 from etl.transform_products import transform_products
 from etl.transform_clients import transform_clients
 from etl.transform_import_costs import transform_import_costs
@@ -87,7 +88,7 @@ def main() -> None:
     """
 
     raw_paths = {
-        # "sales": paths.RAW_DATA_DIR / "vendas_2023_2024.csv",
+        "sales": paths.RAW_DATA_DIR / "vendas_2023_2024.csv",
         "products": paths.RAW_DATA_DIR / "produtos_raw.csv",
         "clients": paths.RAW_DATA_DIR / "clientes_crm.json",
         "import_costs": paths.RAW_DATA_DIR / "custos_importacao.json",
@@ -95,7 +96,7 @@ def main() -> None:
     }
 
     processed_paths = {
-        # "sales": paths.PROCESSED_DATA_DIR / "vendas_2023_2024_processed.csv",
+        "sales": paths.PROCESSED_DATA_DIR / "vendas_2023_2024_processed.csv",
         "products": paths.PROCESSED_DATA_DIR / "produtos_processed.csv",
         "clients": paths.PROCESSED_DATA_DIR / "clientes_crm_processed.csv",
         "import_costs": paths.PROCESSED_DATA_DIR / "custos_importacao_processed.csv",
@@ -104,7 +105,7 @@ def main() -> None:
     }
 
     transformers = {
-        ## "sales": transform_sales,
+        "sales": transform_sales,
         "products": transform_products,
         "clients": transform_clients,
         "import_costs": transform_import_costs,

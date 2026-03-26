@@ -40,7 +40,7 @@ setup:
 
 etl:
 	@$(PYTHON) src/pipeline.py
- 	@echo "==> ETL pipeline finished successfully. Data ready in data/processed/"
+	@echo "==> ETL pipeline finished successfully. Data ready in data/processed/"
 
 # ==========================================
 # ANALYSIS AND PRESENTATION (Notebooks)
